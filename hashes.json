@@ -1,8 +1,8 @@
 {
   "files": {
-    "proview.json": "SHA256_OF_PROVIEW_JSON",
-    "rules_markdown.md": "SHA256_OF_RULES_MARKDOWN",
-    "locales/en-US.json": "SHA256_OF_EN_US_JSON"
+    "proview.json": "23b087660ab0c94fa35de61d404f19f4d1f56974929b1653cf361622ecc882a2",
+    "rules_markdown.md": "77e550c6a303adec6608b9e95c6b60e0b13f9b779036e8cac5ea2a11e141da46",
+    "locales/en-US.json": "54cbfc07161ea5417608488f11c1c8bf07502baf06c1a90bf71820e6b61a77cd"
   },
-  "on_mismatch": "warn"   // warn | abort
+  "on_mismatch": "warn" 
 }

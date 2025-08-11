@@ -1,6 +1,7 @@
 {
   "name": "ProView",
   "version": "1.0.0",
+  "$schema": "./proview.schema.json",
   "last_updated": "2025-08-11T00:00:00Z",
   "description": "ProView — A Professional Response Framework for reviewing technical, business, and professional content.",
   "repository": {
@@ -27,13 +28,10 @@
 
   "install_flow_ref": "See INSTALLER.md",
   "rules_markdown_url": "https://raw.githubusercontent.com/Busted1942/proview/main/rules_markdown.md",
-
-  /* ======== NEW FEATURES (v1.0-ready, off by default) ======== */
-
-  "remote": {
+    "remote": {
     "status_url": "https://raw.githubusercontent.com/Busted1942/proview/main/status.json",
     "enabled": true,
-    "on_error": "proceed"        // proceed | warn | abort
+    "on_error": "proceed"        
   },
 
   "i18n": {
@@ -44,16 +42,16 @@
 
   "auto_update": {
     "config_url": "https://raw.githubusercontent.com/Busted1942/proview/main/proview.json",
-    "enabled": false,            // leave OFF for v1.0 test; can enable later
+    "enabled": false,            
     "check_interval_days": 7
   },
 
   "telemetry": {
-    "enabled": false,            // opt-in only
-    "mode": "local",             // local | remote
-    "remote_url": "",            // set only if mode=remote
-    "fields": ["mode_used", "labels_used", "edits_count"],  // minimal by default
-    "anonymize": true
+  "enabled": false,
+  "mode": "remote",
+  "remote_url": "",
+  "fields": ["mode_used", "labels_used", "edits_count"],
+  "anonymize": true
   },
 
   "themes": {
@@ -83,8 +81,8 @@
 
   "context": {
     "auto_mode_switch": true,
-    "fact_bias_threshold": 0.6,    // >0.6 numeric/claims => prefer Fact Mode
-    "insight_bias_threshold": 0.6  // >0.6 conceptual/strategy => suggest Insight Mode
+    "fact_bias_threshold": 0.6,    
+    "insight_bias_threshold": 0.6  
   },
 
   "changelog": {

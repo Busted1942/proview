@@ -1,0 +1,239 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Busted1942/proview/raw/main/proview.schema.json",
+  "title": "ProView Configuration",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["name", "version", "description"],
+  "properties": {
+    "$schema": { "type": "string" },
+
+    "name": { "type": "string", "minLength": 1 },
+
+    "version": { "$ref": "#/$defs/semver" },
+
+    "last_updated": { "type": "string", "format": "date-time" },
+
+    "description": { "type": "string", "minLength": 1 },
+
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "url"],
+      "properties": {
+        "type": { "type": "string", "enum": ["git", "hg", "svn", "other"] },
+        "url": { "$ref": "#/$defs/url" }
+      }
+    },
+
+    "author": { "type": "string" },
+
+    "license": { "type": "string" },
+
+    "help_trigger": { "type": "string" },
+
+    "help_text": { "type": "string" },
+
+    "banner": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "show_once_per_chat", "text_templates"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "show_once_per_chat": { "type": "boolean" },
+        "text_templates": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "default": { "type": "string", "minLength": 1 }
+          },
+          "required": ["default"]
+        },
+        "palette": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "bg": { "$ref": "#/$defs/hexColor" },
+              "fg": { "$ref": "#/$defs/hexColor" }
+            },
+            "required": ["bg", "fg"]
+          }
+        }
+      }
+    },
+
+    "preferences": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "hide_banner_on_first_use": { "type": "boolean" }
+      }
+    },
+
+    "install_flow_ref": { "type": "string" },
+
+    "rules_markdown_url": { "$ref": "#/$defs/url" },
+
+    "remote": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status_url", "enabled", "on_error"],
+      "properties": {
+        "status_url": { "$ref": "#/$defs/url" },
+        "enabled": { "type": "boolean" },
+        "on_error": { "type": "string", "enum": ["proceed", "warn", "abort"] }
+      }
+    },
+
+    "i18n": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["default_locale", "locales_index_url", "strings_url_template"],
+      "properties": {
+        "default_locale": { "$ref": "#/$defs/locale" },
+        "locales_index_url": { "$ref": "#/$defs/url" },
+        "strings_url_template": { "type": "string", "pattern": "https?://.+" }
+      }
+    },
+
+    "auto_update": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["config_url", "enabled", "check_interval_days"],
+      "properties": {
+        "config_url": { "$ref": "#/$defs/url" },
+        "enabled": { "type": "boolean" },
+        "check_interval_days": { "type": "integer", "minimum": 1, "maximum": 365 }
+      }
+    },
+
+    "telemetry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "mode", "anonymize", "fields"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "mode": { "type": "string", "enum": ["local", "remote"] },
+        "remote_url": { "$ref": "#/$defs/url" },
+        "fields": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "anonymize": { "type": "boolean" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "enabled": { "const": true }, "mode": { "const": "remote" } }
+          },
+          "then": {
+            "required": ["remote_url"]
+          }
+        }
+      ]
+    },
+
+    "themes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["active", "index_url", "theme_url_template"],
+      "properties": {
+        "active": { "type": "string" },
+        "index_url": { "$ref": "#/$defs/url" },
+        "theme_url_template": { "type": "string", "pattern": "https?://.+" }
+      }
+    },
+
+    "profiles": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["active", "profiles_url"],
+      "properties": {
+        "active": { "type": "string" },
+        "profiles_url": { "$ref": "#/$defs/url" }
+      }
+    },
+
+    "security": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["hashes_url", "verify_core_files"],
+      "properties": {
+        "hashes_url": { "$ref": "#/$defs/url" },
+        "verify_core_files": { "type": "boolean" }
+      }
+    },
+
+    "offline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cache_enabled", "cache_files"],
+      "properties": {
+        "cache_enabled": { "type": "boolean" },
+        "cache_files": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        }
+      }
+    },
+
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["auto_mode_switch", "fact_bias_threshold", "insight_bias_threshold"],
+      "properties": {
+        "auto_mode_switch": { "type": "boolean" },
+        "fact_bias_threshold": { "$ref": "#/$defs/ratio01" },
+        "insight_bias_threshold": { "$ref": "#/$defs/ratio01" }
+      }
+    },
+
+    "changelog": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["url", "show_on_update"],
+      "properties": {
+        "url": { "$ref": "#/$defs/url" },
+        "show_on_update": { "type": "boolean" }
+      }
+    },
+
+    "keywords": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    }
+  },
+
+  "$defs": {
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https?://.+"
+    },
+    "semver": {
+      "type": "string",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+      "examples": ["1.0.0", "1.2.3-beta.1+build45"]
+    },
+    "locale": {
+      "type": "string",
+      "pattern": "^[a-z]{2,3}-[A-Z]{2}$",
+      "examples": ["en-US", "es-ES", "de-DE"]
+    },
+    "hexColor": {
+      "type": "string",
+      "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$",
+      "examples": ["#FFFFFF", "#1D4ED8"]
+    },
+    "ratio01": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    }
+  }
+}
