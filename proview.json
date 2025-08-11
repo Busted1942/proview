@@ -9,9 +9,9 @@
     "enabled": true,
     "show_once_per_chat": true,
     "text_templates": {
-      "all_chats": "✅ ProView v{{version}} active. • Scope: All Chats • Industry: {{industry}}",
-      "this_chat": "✅ ProView v{{version}} active. • Scope: This chat only • Industry: {{industry}}",
-      "lite": "✅ ProView Lite v{{version}} active — Insight Mode ready. • Scope: Not persistent • Industry: {{industry}}"
+      "all_chats": "✅ ProView active. • Scope: All Chats",
+      "this_chat": "✅ ProView active. • Scope: This chat only",
+      "ProView Lite": "✅ ProView Lite active. • Scope: Not persistent"
     }
   },
   "preferences": {
