@@ -20,5 +20,17 @@ See **INSTALLER.md** for the full flow (version checks, persistence capability, 
 - `CHANGELOG.md` — Version history.
 - `assets/` — Infographic + first-use banner.
 
+## Remote Status, i18n, Themes, Profiles (v1.0-ready, optional)
+
+- **Remote status / kill switch**: `status.json` lets you disable, require a minimum version, or post a deprecation notice—no client update needed.
+- **Internationalization**: Localized strings live under `/locales`. Default is `en-US`; add translations and list them in `locales/locales.json`.
+- **Themes**: Override banner colors/typography via `/themes/default.json` (selected from `themes/themes.json`).
+- **Profiles**: Preconfigure context under `/profiles/profiles.json` (e.g., enterprise policy vs. general).
+- **Hash verification**: `hashes.json` can warn/abort if core files are tampered with.
+- **Offline fallback**: Key files can be cached if GitHub is unavailable.
+- **Context-aware switching**: When enabled, ProView favors Fact Mode for highly factual content and suggests Insight Mode for conceptual/strategy drafts.
+- **Changelog prompts**: If `changelog.json` advertises a newer version, the installer can show highlights before upgrading.
+
+
 ## License / Attribution
 ProView — A Professional Response Framework © Matthew J. Watson. You may reference or implement with attribution.

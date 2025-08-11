@@ -1,0 +1,14 @@
+{
+  "latest": "1.0.0",
+  "releases": [
+    {
+      "version": "1.0.0",
+      "date": "2025-08-11",
+      "highlights": [
+        "Initial release with Fact Mode and Insight Mode.",
+        "Install/upgrade flow with persistence checks and industry prompt.",
+        "Optional first-use banner."
+      ]
+    }
+  ]
+}

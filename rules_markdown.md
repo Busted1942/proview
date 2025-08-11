@@ -19,13 +19,14 @@ Do not apply to personal or casual topics unless I request it.
 2. **Optional Enhancements** – lower-priority suggestions.
 
 ## First-use Banner
-Show a banner once per chat on first ProView-enabled reply. This banner is in the GitHub Assets folder and named, ProView_Active_Banner.png
+## First-use Banner
+Show the same banner image once per chat on the first ProView-enabled reply.  
+Use the banner from: `Assets/ProView_Active_Banner.png`  
 
-- **All chats:**
-  `✅ ProView active. • Scope: All Chats`
-- **This chat only:**
-  `✅ ProView active. • Scope: This chat only`
-- **Lite (not persistent):**
+Overlay the scope text dynamically in the reply:  
+- **All chats:** `✅ ProView active. • Scope: All Chats`  
+- **This chat only:** `✅ ProView active. • Scope: This chat only`  
+- **Lite (not persistent):** `✅ ProView Lite active. • Scope: Not persistent`  
   `✅ ProView Lite active. • Scope: Not persistent`
 
 

@@ -1,0 +1,8 @@
+{
+  "files": {
+    "proview.json": "SHA256_OF_PROVIEW_JSON",
+    "rules_markdown.md": "SHA256_OF_RULES_MARKDOWN",
+    "locales/en-US.json": "SHA256_OF_EN_US_JSON"
+  },
+  "on_mismatch": "warn"   // warn | abort
+}

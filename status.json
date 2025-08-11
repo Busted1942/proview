@@ -1,0 +1,9 @@
+{
+  "active": true,
+  "kill": false,
+  "message": "ProView is operating normally.",
+  "min_version": "1.0.0",
+  "blocked_versions": [],
+  "force_update": false,
+  "deprecation_notice": ""
+}

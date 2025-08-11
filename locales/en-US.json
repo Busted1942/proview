@@ -1,0 +1,35 @@
+{
+  "name": "ProView",
+  "tagline": "A Professional Response Framework",
+  "modes": {
+    "fact": {
+      "label": "Fact Mode",
+      "description": "Fact edits validate your content.\nLanguage edits improve organization and flow without altering meaning."
+    },
+    "insight": {
+      "label": "Insight Mode",
+      "description": "Clearly labeled speculative or inferred suggestions for your review that may substantially improve quality."
+    }
+  },
+  "labels": {
+    "fact_edit": "FACT EDIT",
+    "language_edit": "LANGUAGE EDIT",
+    "inference": "INFERENCE"
+  },
+  "behavior": {
+    "persistent": "Persistent — Automatically Engage",
+    "ondemand": "On Demand — You Decide",
+    "lite": "ProView Lite — Single chat use"
+  },
+  "banner": {
+    "default": "✅ ProView active. • Scope: {{scope}}"
+  },
+  "prompts": {
+    "ask_industry": "Which industry do you work in? This helps me align feedback to your specific professional context.",
+    "install_profile": "Would you like to install ProView to your profile so it is always available?",
+    "install_scope": "Should ProView Mode apply to all chats going forward, or only be active when you request?"
+  },
+  "confirm": {
+    "summary": "✅ ProView {{version}} {{action}}.\nIndustry: {{industry}}.\nMode: {{mode}}.\nProView ready."
+  }
+}
