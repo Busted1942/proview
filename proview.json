@@ -1,0 +1,22 @@
+{
+  "name": "Activate ProView Mode",
+  "version": "1.0.0",
+  "last_updated": "2025-08-11T00:00:00Z",
+  "description": "ProView — A Professional Response Framework",
+  "help_trigger": "Help ProView Mode",
+  "help_text": "ProView improves professional content via Fact Mode (fact validation + language edits without changing meaning) and Insight Mode (clearly labeled inferences). Labels: FACT EDIT, LANGUAGE EDIT, INFERENCE. Feedback: Core Recommendations + Optional Enhancements.",
+  "banner": {
+    "enabled": true,
+    "show_once_per_chat": true,
+    "text_templates": {
+      "all_chats": "✅ ProView v{{version}} active. • Scope: All Chats • Industry: {{industry}}",
+      "this_chat": "✅ ProView v{{version}} active. • Scope: This chat only • Industry: {{industry}}",
+      "lite": "✅ ProView Lite v{{version}} active — Insight Mode ready. • Scope: Not persistent • Industry: {{industry}}"
+    }
+  },
+  "preferences": {
+    "hide_banner_on_first_use": false
+  },
+  "install_flow_ref": "See INSTALLER.md",
+  "rules_markdown_url": "https://raw.githubusercontent.com/Busted1942/proview/main/rules_markdown.md"
+}
