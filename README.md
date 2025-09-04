@@ -22,8 +22,9 @@ ProView is a lightweight ruleset that makes AI output **more reliable, transpare
 Choose the installer that matches your goal:
 
 - **Temporary test (chat only):** [`installers/TryItNow.yaml`](installers/TryItNow.yaml)  
-- **Persistent install (if supported):** [`installers/__ProViewInstallerChatGPTFormat.yaml`](installers/__ProViewInstallerChatGPTFormat.yaml)  
-- **Human-readable rules:** [`installers/_ProViewPromptFormat.md`](installers/_ProViewPromptFormat.md) (for Gemini or models that don’t accept YAML)  
+- **Persistent install (if supported):** [`installers/ProViewInstallerChatGPTFormat.yaml`](installers/ProViewInstallerChatGPTFormat.yaml)  
+- **Human-readable rules:** [`installers/_ProViewPromptFormat.md`](installers/_ProViewPromptFormat.md) (for Gemini or models that don’t accept YAML)
+
 
 👉 If unsure, start with **TryItNow.yaml** to try it quickly.
 

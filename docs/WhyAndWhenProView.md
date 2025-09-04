@@ -21,3 +21,7 @@
 - **Contradiction/paradox?**  
   - Just identify → Standard or Fact  
   - Classify type + implications → Insight  
+
+  **Examples**
+- “Summarize this contract; cite sections” → **Fact**
+- “Explain options to cut infra costs w/ risks” → **Insight**
