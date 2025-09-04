@@ -1,46 +1,63 @@
-# ProView — A Professional Response Framework
+# ProView Framework
 
-**ProView** is a structured framework for improving professional content with clarity, accuracy, and insight.
-It defines two modes (Fact Mode, Insight Mode), labeled edits (FACT EDIT, LANGUAGE EDIT, INFERENCE), and a clean feedback structure (Core Recommendations, Optional Enhancements).
-Works across industries with an industry prompt on activation. Supports persistent install (all chats), chat-only usage, and **ProView Lite** when the platform can’t store triggers.
+ProView is a lightweight ruleset that makes AI output **more reliable, transparent, and executive-ready** than Standard mode.
 
-## Modes
-- **Fact Mode** — Fact-only edits supported by provided content or industry standards. No speculative additions or meaning changes.
-- **Insight Mode** — Thoughtful, high-value suggestions and logical inferences to improve clarity, impact, or alignment with goals (clearly labeled as **INFERENCE**).
+---
 
-> **Note:** In ProView, *Fact Mode* is an editorial concept, not the OS/AI fact mode.”
+## Why ProView?
 
-## Install / Upgrade
-See **INSTALLER.md** for the full flow (version checks, persistence capability, profile install, first-use banner).
+| Feature             | Standard Mode                           | ProView Mode                                |
+|---------------------|------------------------------------------|---------------------------------------------|
+| **Evidence**        | May generate without citing sources      | Enforces evidence policy (cite or say “couldn’t retrieve”) |
+| **Inferences**      | Mixed in with facts, not identified      | Clearly labeled 🟨 INFERENCE: so readers know what’s extrapolated |
+| **Challenge**       | Minimal pushback                        | Includes risks, caveats, and counterpoints   |
+| **Validation**      | No self-check                           | Self-critique and validation loop before delivery |
+| **Presentation**    | Raw AI output                           | Polished, consistent, executive-ready        |
+| **User Confidence** | Hard to tell what’s verified             | Transparent separation of fact vs inference  |
 
-## Files
-- `proview.json` — Canonical machine-readable rules (v1.0).
-- `rules_markdown.md` — Human-readable rules (same content as in `proview.json`).
-- `INSTALLER.md` — Copy/paste installer/upgrade instructions.
-- `CHANGELOG.md` — Version history.
-- `assets/` — Infographic + first-use banner.
+---
 
-## Remote Status, i18n, Themes, Profiles (v1.0-ready, optional)
+## Quickstart
 
-- **Remote status / kill switch**: `status.json` lets you disable, require a minimum version, or post a deprecation notice—no client update needed.
+Choose the installer that matches your goal:
 
-- **Internationalization**: Localized strings live under `/locales`. Default is `en-US`; add translations and list them in `locales/locales.json`.
+- **Temporary test (chat only):** [`installers/TryItNow.yaml`](installers/TryItNow.yaml)  
+- **Persistent install (if supported):** [`installers/__ProViewInstallerChatGPTFormat.yaml`](installers/__ProViewInstallerChatGPTFormat.yaml)  
+- **Human-readable rules:** [`installers/_ProViewPromptFormat.md`](installers/_ProViewPromptFormat.md) (for Gemini or models that don’t accept YAML)  
 
-- **Themes**: Override banner colors/typography via `/themes/default.json` (selected from `themes/themes.json`).
+👉 If unsure, start with **TryItNow.yaml** to try it quickly.
 
-- **Profiles**: Preconfigure context under `/profiles/profiles.json` (e.g., enterprise policy vs. general).
+---
 
-- **Hash verification**: `hashes.json` can warn/abort if core files are tampered with.
+## How It Works
 
-- **Offline fallback**: Key files can be cached if GitHub is unavailable.
+- **Scope**: Auto-active for professional/technical; off for casual  
+- **Modes**: Fact (evidence-only) or Insight (adds value; labels inferences)  
+- **Labeling**: Only inferences get 🟨 INFERENCE:  
+- **Evidence**: Cite if accessed; say “couldn’t retrieve” if blocked  
+- **Challenge**: Every recommendation lists risks/counterpoints  
+- **Validation**: Self-critique, missing-inputs callout, quick re-check  
 
-- **Context-aware switching**: When enabled, ProView favors Fact Mode for highly factual content and suggests Insight Mode for conceptual/strategy drafts.
+---
 
-- **Changelog prompts**: If `changelog.json` advertises a newer version, the installer can show highlights before upgrading.
+## Bake-Off Demo
 
-## Configuration
-`proview.json` is comment-free (JSON doesn’t allow comments).  
-See **[docs/CONFIG_GUIDE.md](docs/CONFIG_GUIDE.md)** for every switch, its path, and valid values.
+1. Start a new chat and paste in [`tests/ProViewBakeOffPromptSetUp.yaml`](tests/ProViewBakeOffPromptSetUp.yaml).  
+2. Run your own prompt, or use one of the prefabricated ones:  
+   - [`tests/ProViewStressTestPrompt.md`](tests/ProViewStressTestPrompt.md)  
+   - [`tests/ProViewStressTestPromptHallucinations.md`](tests/ProViewStressTestPromptHallucinations.md)  
+3. Paste in [`tests/ProViewStressTestEvaluation.md`](tests/ProViewStressTestEvaluation.md) to evaluate results.  
 
-## License / Attribution
-ProView — A Professional Response Framework © Matthew J. Watson. You may reference or implement with attribution.
+---
+
+## Documentation
+
+- [Directions & Quick Reference](docs/DirectionsAndQuickReference.md)  
+- [Why & When to Use ProView](docs/WhyAndWhenProView.md)  
+- [ChangeLog](docs/ChangeLog.md)
+
+---
+
+## License
+
+[MIT](LICENSE)
