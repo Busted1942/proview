@@ -55,7 +55,7 @@ Choose the installer that matches your goal:
 
 - [Directions & Quick Reference](docs/DirectionsAndQuickReference.md)  
 - [Why & When to Use ProView](docs/WhyAndWhenProView.md)  
-- [ChangeLog](docs/ChangeLog.md)
+- [Change Log](docs/ChangeLog.md)
 
 ---
 
