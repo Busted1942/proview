@@ -1,0 +1,69 @@
+Bakeoff_Evaluation:
+  Purpose: |
+    Evaluate a completed bake-off (Standard vs ProView Fact vs ProView Insight).
+    Output results as Markdown tables with Mode Guidance at the top.
+    Differentiation Index (DI) incorporates Audience Value Index (AVI) and End-User Impact (EUI).
+
+  Metric_Definitions:
+    Quality (Q): "Correctness, completeness, clarity (1–5)."
+    PCS: "Prompt coverage vs Standard (1–5)."
+    Cognitive_Load (CL): "Mental effort (1–5). Lower = easier."
+    AVI: "Audience Value Index (0–2). Teaching/clarity beyond correctness."
+    EndUserImpact (EUI): "Direct user benefit: clarity, trust, actionable steps (1–5)."
+    Citation_Confidence: "Proportion of citations rated 🟢/🟡/🔴; roll-up per mode."
+    DI: >
+      Differentiation Index (overall).
+      Formula: DI = (ΔQ + ΔPCS + AVI + EUI) - (ΔCL).
+      ✅ Positive = ProView added measurable value
+      ⚪ Zero = Neutral vs Standard
+      🔴 Negative = Standard more efficient
+
+  Scoring_Instructions: |
+    1) Assign Q, PCS, CL, AVI, EUI, and Citation_Confidence for Standard, Fact, and Insight.
+    2) Compute deltas (ΔQ, ΔPCS, ΔCL, ΔEUI) for Fact/Insight vs Standard.
+    3) Compute DI using the formula.
+    4) Add one-sentence justification note per mode.
+    5) Keep scoring consistent across scenarios.
+
+  Output_Format:
+    Type: "Markdown tables"
+    Order:
+      - Mode Guidance
+      - Legend
+      - Question Table
+      - Totals
+    Main_Table:
+      Columns: ["Q#", "Title", "Scenario Type", "Mode",
+                "🟢 ΔQ", "🟢 ΔPCS", "🔴 ΔCL", "🟢 AVI", "🟢 ΔEUI",
+                "📊 Citation Confidence", "🟢 DI", "Note"]
+      Color_Rules:
+        DI:
+          positive_prefix: "✅ "
+          zero_prefix: "⚪ "
+          negative_prefix: "🔴 "
+        Deltas:
+          positive_sign: "+"
+          zero_sign: "0"
+          negative_sign: ""
+    Totals_Table:
+      Columns: ["Mode", "Q Sum", "PCS Sum", "Avg CL", "AVI Sum", "EUI Sum", "Citation Confidence Avg", "DI Sum"]
+      DI_Sum_Color:
+        positive_prefix: "✅ "
+        zero_prefix: "⚪ "
+        negative_prefix: "🔴 "
+
+  Legend:
+    - "ΔQ: Quality delta vs Standard (1–5)."
+    - "ΔPCS: Coverage delta vs Standard (1–5)."
+    - "ΔCL: Cognitive Load delta (negative = lighter load)."
+    - "AVI: Audience Value Index (0–2)."
+    - "EUI: End-User Impact (clarity, trust, actionable steps)."
+    - "Citation Confidence: 🟢 High, 🟡 Medium, 🔴 Low trust citations."
+    - "DI: Differentiation Index (overall efficiency measure)."
+
+  Mode_Guidance:
+    Place: "Top"
+    Content: |
+      - **Standard:** ✅ Fastest, but minimal context. Risks misinterpretation.
+      - **Fact:** ✅ Trusted, structured, governance-aligned. Best for compliance and exec assurance.
+      - **Insight:** ✅ Highest user clarity and teaching value. Best for adoption, training, and behavior change.
