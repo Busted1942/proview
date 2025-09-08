@@ -2,6 +2,26 @@
 
 ---
 
+## [1.9] — 2025-09-08
+### Added
+- **Trusted vendor sites as 🟢** when the user explicitly adds them (allowlist).
+- **Org Support Escalation** prioritizes the user’s org domain (`/support`, `/help`, `/contact`, `/technology`, etc.).
+- **Vendor Fallback** (🟡) for recognized documentation subdomains; disabled outside Lite unless explicitly enabled.
+- **Prompt-Format Installer** for Gemini/GPT models that can’t ingest YAML (prompt-only block).
+- **State Transparency** lines for long operations (“🔍 Validating…” → “✅ Re-checking…”).
+- **Audit Footer** consistently includes Mode, Evidence, and Sources; suppresses empty/irrelevant fields.
+
+### Changed
+- **Retrieval order** clarified and enforced: Trusted (🟢) → Org Support (🟢) → Vendor Fallback (🟡) → Other (🔴, with disclosure).
+- **Insight labeling**: 🟨 prefix for inferences; otherwise identical evidence policy to Fact.
+
+### Fixed
+- Removed reliance on a pre-resolved “support URL” field; discovery now derives from the user’s org base domain on-demand.
+- Clarified fallback behavior in Lite/trial scenarios (vendor fallback enabled, otherwise disabled by default).
+
+
+---
+
 ## [2025-09-02] ProView v1.7.0 (Current)
 **Major Release Summary — rolls up changes from v1.6.2 → v1.6.6**
 

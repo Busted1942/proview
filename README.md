@@ -1,6 +1,6 @@
 # ProView Framework
 
-ProView is a lightweight ruleset that makes AI output **more reliable, transparent, and executive-ready** than Standard mode.
+ProView is a lightweight ruleset that makes AI output **more reliable, transparent, and professional-ready** than Standard mode.
 
 ---
 
@@ -23,7 +23,7 @@ Choose the installer that matches your goal:
 
 - **Temporary test (chat only):** [`installers/TryItNow.yaml`](installers/TryItNow.yaml)  
 - **Persistent install (if supported):** [`installers/ProViewInstallerChatGPTFormat.yaml`](installers/ProViewInstallerChatGPTFormat.yaml)  
-- **Human-readable rules:** [`installers/_ProViewPromptFormat.md`](installers/_ProViewPromptFormat.md) (for Gemini or models that don’t accept YAML)
+- **Human-readable rules and prompt based install:** [`installers/_ProViewPromptFormat.md`](installers/_ProViewPromptFormat.md) (for Gemini or models that don’t accept YAML)
 
 
 👉 If unsure, start with **TryItNow.yaml** to try it quickly.
@@ -38,6 +38,40 @@ Choose the installer that matches your goal:
 - **Evidence**: Cite if accessed; say “couldn’t retrieve” if blocked  
 - **Challenge**: Every recommendation lists risks/counterpoints  
 - **Validation**: Self-critique, missing-inputs callout, quick re-check  
+
+---
+
+## Modes
+
+- **Standard** – Baseline output, no evidence, minimal structure.
+- **Fact** – Evidence-only, runs on trusted/org/vendor domains, citations required.
+- **Insight** – Same as Fact, but adds audience clarity (“why it matters”). Inferences are explicitly labeled 🟨.
+
+---
+
+## Trusted Sites and Escalation
+
+- User-entered trusted domains are treated as **🟢 High confidence**.
+- ProView prioritizes: **Trusted → Org Support → Vendor Fallback**.
+- Org support escalation searches `/support`, `/help`, `/contact` paths on your organization’s homepage.
+
+---
+
+## Safety and Sensitivity Features
+
+- **Safety Overrides:** Blocklisted sites are rejected, even if reachable. Allowlisted sites (user-entered) are treated as 🟢.
+- **Data Sensitivity Nudge:** Automatic banners when SSNs, DOBs, Student IDs, or API keys are detected.
+- **State Transparency:** Emits micro-notes (`🔍 Validating… → ✅ Re-checking…`) during long operations.
+- **Audit Footer:** Every professional response ends with mode, evidence level, and sources summary.
+
+---
+
+## Example Prompt
+
+**User role:** Teacher  
+**Prompt:** "How do I reset a student password?"
+
+
 
 ---
 
