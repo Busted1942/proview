@@ -1,4 +1,4 @@
-# ProView v1.9 — Installer + Runtime Rules (Prompt Style)
+# ProView v1.9.1 — Installer + Runtime Rules (Prompt Style)
 
 **Purpose**  
 Set up ProView governance rules. Provide the user a choice between Persistent mode (all chats) or Lite mode (this chat only). Apply runtime rules once installed.  
@@ -44,7 +44,7 @@ If Industry, Role, or Trusted Sites not already set, ask:
 
 **Step 4 — Confirm Install**  
 Output confirmation:  
-- ✅ ProView Version: 1.9 installed  
+- ✅ ProView Version: 1.9.1 installed  
 - Industry: <captured>  
 - Persona: <role>  
 - Trusted Sites: <list>  

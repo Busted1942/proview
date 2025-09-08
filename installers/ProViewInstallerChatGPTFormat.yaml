@@ -1,4 +1,4 @@
-# ⬇️ proview-installer-compact:v1.9
+# ⬇️ proview-installer-compact:v1.9.1
 Installer:
   Step_0_ModeChoice:
     Prompt: "Install persistently (saved for future chats) or run Lite (this chat only)?"
@@ -59,7 +59,7 @@ Installer:
     Next: Step_3_Capture
 
 ProView:
-  Version: 1.9
+  Version: 1.9.1
   LastUpdated: 2025-09-08
   Scope: "Auto-active for professional/technical; inactive for casual unless turned on."
 

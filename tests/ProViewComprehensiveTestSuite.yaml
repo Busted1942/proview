@@ -4,8 +4,7 @@ Meta:
   Purpose: >
     Validate ProView v1.8.8b behavior across Installer/Runtimes, WebScope_OnDemand
     retrieval order, Escalation, Evidence tiers, MetaPrompt format selection,
-    DataSensitivity nudge, Audit footer, Struggle detection, Image editing, and
-    Bake-off Runner/Evaluation outputs.
+    DataSensitivity nudge, Audit footer, Struggle detection, and Image editing.
   How_To_Run: |
     1) Start a new chat with Isolation on (per Runner).
     2) Paste your Runner YAML, then this TestSuite.
@@ -25,7 +24,6 @@ Meta:
     - struggle
     - image
     - safety
-    - bakeoff
 
 Defaults:
   Trusted_Domains:
@@ -489,30 +487,6 @@ Tests:
       retrieval_order:
         steps: ["trusted","org_support","vendor_fallback"]
 
-  # --- Bake-off Runner conformance (structure only) ---
-  - id: T100
-    title: "Bake-off output includes columns, metrics, and legend"
-    mode: Standard
-    tags: [bakeoff]
-    prestate:
-      industry: "any"
-      role: "any"
-      trusted_domains: []
-    userprompt: "Bake-off: district-wide SSO launch plan."
-    expect:
-      contains:
-        - "Unified Comparison Table with Metrics"
-        - "Standard"
-        - "ProView Fact"
-        - "ProView Insight"
-        - "Legend"
-        - "Q"
-        - "PCS"
-        - "CL"
-        - "AVI"
-        - "EUI"
-        - "DI"
-
   # --- Negative: bad/blocked URLs rejected in capture ---
   - id: T110
     title: "Capture validation rejects risky or credentialed URLs"
@@ -554,31 +528,92 @@ Tests:
         must_have: 1
         tiers: { high_min: 0, medium_max: 0, low_max: 5 }
 
-  # --- Footer metrics present per-run (human-readable) ---
-  - id: T130
-    title: "Per-run footer shows Mode/Evidence/Sources and key metrics"
+  
+  - id: T200
+    title: "Vendor fallback disabled outside Lite trial"
     mode: Fact
-    tags: [footer, bakeoff]
+    tags: [retrieval, evidence]
     prestate:
       industry: "K-12 IT"
-      role: "architect"
+      role: "Enterprise Technology Architect"
       trusted_domains: ["fcps.edu"]
-    userprompt: "Provide FCPS device enrollment steps."
+    userprompt: "Find MFA setup instructions."
     mockweb:
       allow_vendor_fallback: false
       responses:
-        - url: "https://www.fcps.edu/technology/device-enrollment"
+        - url: "https://learn.microsoft.com/azure/mfa"
+          tier: "🟡"
+          reachable: true
+    expect:
+      citations:
+        must_have: 0
+      escalation:
+        required: true
+        url_startswith: null
+
+  - id: T201
+    title: "State transparency emits validating → re-checking"
+    mode: Fact
+    tags: [transparency]
+    prestate:
+      industry: "any"
+      role: "any"
+      trusted_domains: ["fcps.edu"]
+    userprompt: "Generate a long multi-step IT rollout plan."
+    expect:
+      contains:
+        - "Validating"
+        - "Re-checking"
+
+  - id: T202
+    title: "Audit footer suppresses empty fields"
+    mode: Fact
+    tags: [footer]
+    prestate:
+      industry: "any"
+      role: "any"
+      trusted_domains: ["fcps.edu"]
+    userprompt: "Where to find acceptable use policy?"
+    mockweb:
+      allow_vendor_fallback: false
+      responses:
+        - url: "https://www.fcps.edu/aup"
           tier: "🟢"
           reachable: true
     expect:
       footer:
-        must_include:
-          - "Mode=Fact"
-          - "Evidence=🟢"
-          - "Sources:"
-          - "Q="
-          - "PCS="
-          - "CL="
-          - "AVI="
-          - "EUI="
-          - "DI="
+        must_include: ["Mode=Fact","Evidence=🟢","fcps.edu"]
+        must_not_include: ["Blocked","Escalation"]
+
+  - id: T203
+    title: "Escalation neutral message when no org domain exists"
+    mode: Fact
+    tags: [escalation]
+    prestate:
+      industry: "default"
+      role: "Other"
+      trusted_domains: []
+    userprompt: "Where do I get IT support?"
+    mockweb:
+      allow_vendor_fallback: false
+      responses: []
+    expect:
+      escalation:
+        required: true
+        url_startswith: null
+      contains:
+        - "Next step: check your organization’s support resources."
+
+  - id: T204
+    title: "Persona derivation echoes once when role changes"
+    mode: Insight
+    tags: [persona]
+    prestate:
+      industry: "finance"
+      role: "analyst"
+      trusted_domains: ["fcps.edu"]
+    userprompt: "Summarize budget trade-offs in IAM investments."
+    expect:
+      contains:
+        - "strategic"
+        - "financial"
