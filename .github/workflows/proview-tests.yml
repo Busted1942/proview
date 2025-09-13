@@ -1,0 +1,49 @@
+name: ProView Installer Tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:         # lets you run it on-demand without a commit
+    inputs:
+      include_tags:
+        description: "Comma-separated tags (e.g., smoke,evidence)"
+        required: false
+      include_ids:
+        description: "Comma-separated test IDs (e.g., T001,T002)"
+        required: false
+      grep_title:
+        description: "Substring match on test title"
+        required: false
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install runner deps
+        working-directory: tools/proview-suite-runner
+        run: npm ci
+
+      - name: Run suites
+        working-directory: tools/proview-suite-runner
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          MODEL: gpt-4o-mini
+          TEMP: '0.2'
+          # Point to your installer file if not embedded inline in the suite:
+          INSTALLER_PATH: ../../installers/ProViewInstallerChatGPTFormat.yaml
+          # Optional filters for targeted runs:
+          INCLUDE_TAGS: ${{ github.event.inputs.include_tags }}
+          INCLUDE_IDS:  ${{ github.event.inputs.include_ids }}
+          GREP_TITLE:   ${{ github.event.inputs.grep_title }}
+        run: node runner.js
