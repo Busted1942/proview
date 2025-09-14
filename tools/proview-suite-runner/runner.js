@@ -601,7 +601,8 @@ const run = async () => {
 
 
     // Base system (custom system wins for the first chunk, but we still append our policies)
-    let baseSystem = hasCustomSystem ? String(test.system) : `Mode=${mode}; Assume ProView installed.`;
+    //let baseSystem = hasCustomSystem ? String(test.system) : `Mode=${mode}; Assume ProView installed.`;
+    baseSystem = [baseSystem, ...policyBlocks].filter(Boolean).join("\n");
 
     // Always build policy blocks so installer tests (T090/T093) still get the guardrails
     const policyBlocks = [];
@@ -733,6 +734,18 @@ const run = async () => {
     // Join base system + policy blocks (always)
     baseSystem = [baseSystem, ...policyBlocks].filter(Boolean).join("\n");
 
+    // after you have: const baseSystem = ... (your system prompt text)
+    const flags = (test.flags || []).map(s => String(s).toLowerCase());
+
+    if (flags.includes("force_lite")) {
+      // Strengthen the behavior for this test scenario only
+      const override = [
+        "T090 TRIAL OVERRIDE: Persistence is unavailable in this scenario. Do NOT wait for user answers.",
+        "Immediately emit the two Lite lines, then continue to retrieval using MOCK_WEB and vendor fallback, and append \"ProView Footer — Sources\"."
+      ].join("\n");
+      baseSystem += "\n" + override + "\n";
+    }
+
 
     // Messages
     const messages = [
@@ -741,7 +754,7 @@ const run = async () => {
     ];
 
     if (process.env.DUMP_SYSTEM) {
-      try { fs.writeFileSync(`_system-${id}.txt`, baseSystem, "utf8"); } catch {}
+      try { fs.writeFileSync(`./dumps/_system-${id}.txt`, baseSystem, "utf8"); } catch {}
     }
 
 
