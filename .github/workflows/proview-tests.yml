@@ -1,34 +1,45 @@
-name: ProView Installer Tests
+name: ProView CI
 
 on:
-  push:
   pull_request:
+    branches: [ dev ]
+  workflow_dispatch:
 
 jobs:
-  run-tests:
+  tests:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
+
+      - name: Install repo deps
+        run: npm ci
+
+      - name: Verify runner path exists
+        run: |
+          ls -la
+          ls -la tools || true
+          test -d tools/proview-suite-runner || { echo "runner path missing"; exit 1; }
 
       - name: Install runner deps
-        working-directory: tools/proview-installer-test-runner
-        run: |
-          npm ci
+        working-directory: tools/proview-suite-runner
+        run: npm ci
 
-      - name: Run suites
-        working-directory: tools/proview-installer-test-runner
+      - name: Verify OPENAI_API_KEY secret is present
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          MODEL: gpt-4o-mini
-          TEMP: '0.2'
-          INSTALLER_PATH: ../../installers/ProViewInstallerChatGPTFormat.yaml
         run: |
-          node runner.js
+          test -n "$OPENAI_API_KEY" || { echo "ERROR: Missing OPENAI_API_KEY secret"; exit 1; }
+
+      - name: Run focused installer tests
+        working-directory: tools/proview-suite-runner
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          FORCE_MODEL: gpt-4o-mini
+          SOFT_MAX_TOKENS: 320
+          HARD_MAX_TOKENS: 600
+        run: node runner.js --suite=../../ProViewComprehensiveTestSuite.yaml --id T090,T091,T093,T094,T095,T096
