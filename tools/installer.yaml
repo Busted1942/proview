@@ -1,0 +1,8 @@
+# Put your Installer v3.3 YAML here, or set installer.inline in the suite.
+Installer:
+  Version: "3.3"
+  Codes:
+    IntegrityFail:  "PV-INSTALL:INTEGRITY_FAIL"
+    PersistenceFail:"PV-INSTALL:PERSISTENCE_UNAVAILABLE"
+    Ok:             "PV-INSTALL:OK"
+  # ... (rest of Installer v3.3)

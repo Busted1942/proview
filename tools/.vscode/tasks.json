@@ -1,0 +1,83 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "ProView: Test (all)",
+      "type": "shell",
+      "command": "node runner.js",
+      "options": {
+        "cwd": "${workspaceFolder}/tools/proview-suite-runner",
+        "env": {
+          "TEST_SUITE": "${workspaceFolder}/tools/proview-suite-runner/tests/ProViewComprehensiveTestSuite.yaml"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "ProView: Test (smoke)",
+      "type": "shell",
+      "command": "node runner.js",
+      "options": {
+        "cwd": "${workspaceFolder}/tools/proview-suite-runner",
+        "env": {
+          "TEST_SUITE": "${workspaceFolder}/tools/proview-suite-runner/tests/ProViewComprehensiveTestSuite.yaml",
+          "INCLUDE_TAGS": "smoke"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "ProView: Test (ids T001,T011)",
+      "type": "shell",
+      "command": "node runner.js",
+      "options": {
+        "cwd": "${workspaceFolder}/tools/proview-suite-runner",
+        "env": {
+          "TEST_SUITE": "${workspaceFolder}/tools/proview-suite-runner/tests/ProViewComprehensiveTestSuite.yaml",
+          "INCLUDE_IDS": "T001,T011"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "ProView: Test (grep 'escalation')",
+      "type": "shell",
+      "command": "node runner.js",
+      "options": {
+        "cwd": "${workspaceFolder}/tools/proview-suite-runner",
+        "env": {
+          "TEST_SUITE": "${workspaceFolder}/tools/proview-suite-runner/tests/ProViewComprehensiveTestSuite.yaml",
+          "GREP_TITLE": "escalation"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "ProView: Test (smoke routed)",
+      "type": "shell",
+      "command": "node runner.js",
+      "options": {
+        "cwd": "${workspaceFolder}/tools/proview-suite-runner",
+        "env": {
+          "TEST_SUITE": "${workspaceFolder}/tools/proview-suite-runner/tests/ProViewComprehensiveTestSuite.yaml",
+          "INCLUDE_TAGS": "smoke",
+          "TAG_MODEL_MAP": "smoke:gpt-4o-mini,installer:gpt-4o-mini,retrieval:gpt-4o,evidence:gpt-4o"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "ProView: Test (only gpt-4o-mini)",
+      "type": "shell",
+      "command": "node runner.js",
+      "options": {
+        "cwd": "${workspaceFolder}/tools/proview-suite-runner",
+        "env": {
+          "TEST_SUITE": "${workspaceFolder}/tools/proview-suite-runner/tests/ProViewComprehensiveTestSuite.yaml",
+          "INCLUDE_MODEL": "gpt-4o-mini"
+        }
+      },
+      "problemMatcher": []
+    }
+  ]
+}

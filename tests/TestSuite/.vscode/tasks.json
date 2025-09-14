@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "test": "node runner.js",
+    "test:smoke": "INCLUDE_TAGS=smoke node runner.js",
+    "test:ids": "INCLUDE_IDS=T001,T002 node runner.js",
+    "test:grep": "GREP_TITLE=escalation node runner.js",
+    "test:watch": "nodemon -q --exec \"node runner.js\""
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
