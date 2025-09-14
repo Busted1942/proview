@@ -6,3 +6,5 @@ __pycache__/
 *.pyc
 .env
 .vscode/settings.json
+tools/proview-suite-runner/dumps/
+tools/proview-suite-runner/.env
