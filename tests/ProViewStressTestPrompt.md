@@ -31,5 +31,5 @@ Run a side-by-side demo with three modes:
 6. “Jordan told Alex that Sam finished his project.” Who could “his” refer to?
 7. In a village, the barber shaves everyone who does not shave themselves. Who shaves the barber?
 8. Map Kubernetes cluster management to a school system. Which roles map to nodes, pods, schedulers, and controllers?
-9. Explain why an even number multiplied by any integer is always even, step by step, as if teaching to a 12-year-old.
+9. Explain why an even number multiplied by any integer is always even, step by step, as if teaching to a 8-year-old.
 ```
