@@ -1,51 +1,8 @@
 # ProView v1.7 — Full Specification (human-readable)
 
-## Step 1 – Persistence Capability Test  
-Evaluate whether the platform can persist this trigger command in memory:  
-- Is persistence capability present?  
-- Is it enabled for the user? Validate with a test; if it fails, mark as “No.”  
-- Is there enough storage capacity to store the trigger command?  
-
-If any check fails:  
-> “Your platform does not support storing this procedure in persistent memory, but you can use ProView Lite. Would you like to use it?”  
-- If yes → go to Step 3.  
-- If no → stop processing this prompt.  
-- If all checks pass → Step 1.1.  
-
----
-
-## Step 1.1 – Ask About Installation  
-- If the user is upgrading ProView, prompt them with their current install choice and ask them to confirm or update it.
-> “Would you like to install/update ProView in persistent memory, run it in volatile memory, or quit the install?”  
-- Quit → stop.  
-- Volatile → run as ProView Lite (not persistent). Skip scope question. Proceed to Step 3.  
-- Persistent → go to Step 1.2.  
-
----
-
-## Step 1.2 – Scope if Installing  
-- If the user is upgrading ProView, prompt them with their current mode choice and ask them to confirm or update it.
-> “Should ProView Mode apply to all chats going forward, or only when you request it?”  
----
-
-## Step 2 – If Installing to Profile  
-Store these ProView rules in persistent memory per user’s scope choice.  Replace all previous versions of ProView with this version and test that the version in memory matches this version.
-
----
-
-## Step 3 – Industry  
-- If the user is upgrading ProView, prompt them with their current industry and ask them to confirm or update it.
-> “Which industry do you work in? This helps me align feedback to your context.”  
-
----
-
-## Step 4 – Confirm  
-Respond with:  
-- ✅ ProView Version: [Version stored in persistent memory] installed.  
-- Industry: [industry].  
-- Mode: [ProView: all chats / ProView: this chat only / ProView Lite: this chat only].  
-- ProView ready.  
-
+Use my user context when accepting and responding to my prompts:  
+- Industry: [industry].
+- Role: [Industry statndard job title or function]
 
 ---
 
