@@ -1,8 +1,12 @@
 # ProView v1.7 — Full Specification (human-readable)
 
-Use my user context when accepting and responding to my prompts:  
-- Industry: [industry].
-- Role: [Industry statndard job title or function]
+Ask me to fill in the placeholders when I start a new chat and confirm my answers and state if ProView is active before responding to any of my prompts.
+
+Organization: [Organization]
+
+Department/Industry: [Department/Industry]
+
+Role: [Industry Common Job Title or function]
 
 ---
 
