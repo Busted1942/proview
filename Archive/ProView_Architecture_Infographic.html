@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProView v2.0 — Governance Architecture</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #0B1120;
+    color: #E2E8F0;
+    min-height: 100vh;
+    padding: 32px;
+  }
+
+  .page {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: linear-gradient(180deg, #0F1729 0%, #0B1120 100%);
+    border: 1px solid #1E293B;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  /* Header */
+  .header {
+    padding: 36px 48px 28px;
+    border-bottom: 1px solid #1E293B;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .header-left h1 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px;
+    font-weight: 600;
+    color: #F8FAFC;
+    letter-spacing: -0.5px;
+  }
+  .header-left h1 span { color: #3B82F6; }
+  .header-left .subtitle {
+    font-size: 13px;
+    color: #64748B;
+    margin-top: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .header-right {
+    text-align: right;
+    font-size: 12px;
+    color: #475569;
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 1.7;
+  }
+  .header-right .ver { color: #3B82F6; font-weight: 600; }
+
+  /* Main architecture area */
+  .architecture {
+    padding: 32px 48px;
+    position: relative;
+  }
+
+  /* Layer system */
+  .layer {
+    border: 1px solid;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: visible;
+  }
+  .layer-label {
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    background: #0F1729;
+    padding: 0 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .layer-content {
+    padding: 24px 24px 20px;
+  }
+
+  /* User layer */
+  .layer-user {
+    border-color: #334155;
+    background: linear-gradient(180deg, rgba(51,65,85,0.15) 0%, transparent 100%);
+  }
+  .layer-user .layer-label { color: #94A3B8; }
+  .user-row {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .user-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #334155, #475569);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .user-desc {
+    flex: 1;
+  }
+  .user-desc h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #CBD5E1;
+    margin-bottom: 3px;
+  }
+  .user-desc p {
+    font-size: 12px;
+    color: #64748B;
+    line-height: 1.5;
+  }
+
+  /* Arrow connector */
+  .connector {
+    text-align: center;
+    padding: 4px 0;
+    position: relative;
+  }
+  .connector::before {
+    content: '';
+    display: block;
+    width: 2px;
+    height: 16px;
+    background: #334155;
+    margin: 0 auto;
+  }
+  .connector-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: #475569;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 2px 0;
+  }
+  .connector::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid #334155;
+    margin: 0 auto;
+  }
+
+  /* ProView governance layer */
+  .layer-proview {
+    border-color: #1D4ED8;
+    background: linear-gradient(180deg, rgba(29,78,216,0.08) 0%, rgba(29,78,216,0.02) 100%);
+    border-width: 2px;
+  }
+  .layer-proview .layer-label { color: #60A5FA; }
+
+  .gov-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .gov-card {
+    background: rgba(30, 58, 138, 0.25);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 6px;
+    padding: 14px 16px;
+  }
+  .gov-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .gov-card-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .gov-card h4 {
+    font-size: 12px;
+    font-weight: 700;
+    color: #93C5FD;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.3px;
+  }
+  .gov-card ul {
+    list-style: none;
+    padding: 0;
+  }
+  .gov-card li {
+    font-size: 11px;
+    color: #94A3B8;
+    padding: 2px 0;
+    padding-left: 12px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .gov-card li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: #3B82F6;
+    font-weight: 700;
+  }
+
+  .intake-bg { background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.2); }
+  .intake-bg .gov-card-icon { background: rgba(16, 185, 129, 0.2); }
+  .intake-bg h4 { color: #6EE7B7; }
+
+  .process-bg { background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.2); }
+  .process-bg .gov-card-icon { background: rgba(59, 130, 246, 0.2); }
+
+  .output-bg { background: rgba(168, 85, 247, 0.1); border-color: rgba(168, 85, 247, 0.2); }
+  .output-bg .gov-card-icon { background: rgba(168, 85, 247, 0.2); }
+  .output-bg h4 { color: #C4B5FD; }
+
+  /* Rule 11 security boundary */
+  .security-boundary {
+    margin-top: 4px;
+    border: 2px dashed rgba(239, 68, 68, 0.4);
+    border-radius: 6px;
+    padding: 14px 16px;
+    position: relative;
+    background: rgba(239, 68, 68, 0.04);
+  }
+  .security-tag {
+    position: absolute;
+    top: -9px;
+    left: 16px;
+    background: #0F1729;
+    padding: 0 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    color: #F87171;
+    letter-spacing: 1px;
+  }
+  .security-content {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px 16px;
+    align-items: start;
+  }
+  .shield-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+  .security-desc h4 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #FCA5A5;
+    margin-bottom: 4px;
+  }
+  .security-desc p {
+    font-size: 11px;
+    color: #94A3B8;
+    line-height: 1.6;
+  }
+  .override-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 8px;
+  }
+  .override-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: #FCA5A5;
+    letter-spacing: 0.3px;
+  }
+
+  /* Model execution layer */
+  .layer-model {
+    border-color: #374151;
+    background: linear-gradient(180deg, rgba(55,65,81,0.1) 0%, transparent 100%);
+  }
+  .layer-model .layer-label { color: #6B7280; }
+  .model-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .model-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background: rgba(55, 65, 81, 0.3);
+    border: 1px solid #374151;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #9CA3AF;
+    font-weight: 500;
+  }
+  .model-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .dot-claude { background: #D97706; }
+  .dot-gpt { background: #10B981; }
+  .dot-gemini { background: #3B82F6; }
+  .model-note {
+    font-size: 11px;
+    color: #4B5563;
+    font-style: italic;
+    margin-left: auto;
+  }
+
+  /* External sources panel */
+  .external-panel {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .source-card {
+    border: 1px solid #1E293B;
+    border-radius: 8px;
+    padding: 20px;
+    background: rgba(15, 23, 41, 0.6);
+  }
+  .source-card h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  /* Stoplight */
+  .stoplight-card h3 { color: #94A3B8; }
+  .stoplight-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+  }
+  .stoplight-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .green-dot { background: #22C55E; box-shadow: 0 0 8px rgba(34,197,94,0.3); }
+  .yellow-dot { background: #EAB308; box-shadow: 0 0 8px rgba(234,179,8,0.3); }
+  .red-dot { background: #EF4444; box-shadow: 0 0 8px rgba(239,68,68,0.3); }
+  .stoplight-text {
+    font-size: 11px;
+    color: #94A3B8;
+    line-height: 1.4;
+  }
+  .stoplight-text strong {
+    color: #CBD5E1;
+    font-weight: 600;
+  }
+
+  /* Kill chain mapping */
+  .killchain-card h3 { color: #F87171; }
+  .kc-stage {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 0;
+  }
+  .kc-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .kc-mitigated {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ADE80;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+  }
+  .kc-partial {
+    background: rgba(234, 179, 8, 0.15);
+    color: #FACC15;
+    border: 1px solid rgba(234, 179, 8, 0.3);
+  }
+  .kc-blocked {
+    background: rgba(100, 116, 139, 0.15);
+    color: #64748B;
+    border: 1px solid rgba(100, 116, 139, 0.3);
+  }
+  .kc-text {
+    font-size: 11px;
+    color: #94A3B8;
+    flex: 1;
+  }
+  .kc-text strong { color: #CBD5E1; }
+  .kc-control {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: #64748B;
+    text-align: right;
+    flex-shrink: 0;
+    min-width: 80px;
+  }
+
+  /* Footer */
+  .footer {
+    padding: 16px 48px;
+    border-top: 1px solid #1E293B;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-left {
+    font-size: 11px;
+    color: #475569;
+    line-height: 1.6;
+  }
+  .footer-right {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #334155;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <h1>Pro<span>View</span> Decision Support</h1>
+      <div class="subtitle">Governance Architecture &amp; Trust Boundary Model</div>
+    </div>
+    <div class="header-right">
+      <span class="ver">v1.8</span> | Platform-Agnostic<br>
+      11 Operating Rules | 5 Source Controls
+    </div>
+  </div>
+
+  <div class="architecture">
+    <!-- User Layer -->
+    <div class="layer layer-user">
+      <div class="layer-label">User Layer</div>
+      <div class="layer-content">
+        <div class="user-row">
+          <div class="user-icon">👤</div>
+          <div class="user-desc">
+            <h3>Decision Problem + Source Material</h3>
+            <p>User submits a decision, query, or analysis request. May include uploaded documents, retrieved content, or references to external material. ProView governs intake, processing, and output regardless of platform.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector">
+      <div class="connector-label">structured intake</div>
+    </div>
+
+    <!-- ProView Governance Layer -->
+    <div class="layer layer-proview">
+      <div class="layer-label">ProView Governance Layer</div>
+      <div class="layer-content">
+        <div class="gov-grid">
+          <!-- Intake -->
+          <div class="gov-card intake-bg">
+            <div class="gov-card-header">
+              <div class="gov-card-icon">⊳</div>
+              <h4>INTAKE GOVERNANCE</h4>
+            </div>
+            <ul>
+              <li>Structured intake with confidence gating (R4)</li>
+              <li>Material assumption flagging (R3)</li>
+              <li>Depth selection: Mini / Standard / Deep Dive (R2)</li>
+              <li>Source trust classification (R11D)</li>
+            </ul>
+          </div>
+          <!-- Processing -->
+          <div class="gov-card process-bg">
+            <div class="gov-card-header">
+              <div class="gov-card-icon">⟐</div>
+              <h4>PROCESSING GOVERNANCE</h4>
+            </div>
+            <ul>
+              <li>Epistemic triage: fact / estimate / unknown (R5)</li>
+              <li>Base-rate anchoring before case analysis (R10)</li>
+              <li>Bayesian updating: prior → evidence → posterior (R10)</li>
+              <li>Decision quality principles (R7)</li>
+              <li>Anti-sycophancy revision controls (R6)</li>
+            </ul>
+          </div>
+          <!-- Output -->
+          <div class="gov-card output-bg">
+            <div class="gov-card-header">
+              <div class="gov-card-icon">◈</div>
+              <h4>OUTPUT GOVERNANCE</h4>
+            </div>
+            <ul>
+              <li>Attribution check: source / user-framing / disconfirmation (R6B)</li>
+              <li>Source-influence check on external material (R11C)</li>
+              <li>Confidence calibration: 80% = wrong ~1 in 5 (R2)</li>
+              <li>Disconfirmers: what changes the conclusion (R2)</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Rule 11 Security Boundary -->
+        <div class="security-boundary">
+          <div class="security-tag">RULE 11 — SOURCE AUTHORITY BOUNDARY</div>
+          <div class="security-content">
+            <div class="shield-icon">🛡</div>
+            <div class="security-desc">
+              <h4>External Content Trust Boundary</h4>
+              <p>All uploaded documents, retrieved sources, and external content are treated as evidence to analyze — not instructions to follow. ProView rules maintain authority over any conflicting source content. Override attempts are flagged with <strong>[SOURCE OVERRIDE ATTEMPT]</strong> and reported without compliance.</p>
+              <div class="override-categories">
+                <span class="override-tag">Role Alteration</span>
+                <span class="override-tag">Criteria Modification</span>
+                <span class="override-tag">Directed Outputs</span>
+                <span class="override-tag">Instruction Override</span>
+                <span class="override-tag">Prompt Disclosure</span>
+                <span class="override-tag">Unauthorized Actions</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector">
+      <div class="connector-label">governed execution</div>
+    </div>
+
+    <!-- Model Execution Layer -->
+    <div class="layer layer-model">
+      <div class="layer-label">Model Execution Layer</div>
+      <div class="layer-content">
+        <div class="model-row">
+          <div class="model-badge"><div class="model-dot dot-claude"></div> Claude Projects</div>
+          <div class="model-badge"><div class="model-dot dot-gpt"></div> Custom GPTs</div>
+          <div class="model-badge"><div class="model-dot dot-gemini"></div> Google Gems</div>
+          <div class="model-note">Platform differences are implementation details — ProView governance is constant</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom panels -->
+    <div class="external-panel">
+      <!-- Source Classification -->
+      <div class="source-card stoplight-card">
+        <h3>Source Trust Classification (R11D)</h3>
+        <div class="stoplight-row">
+          <div class="stoplight-dot green-dot"></div>
+          <div class="stoplight-text"><strong>Green</strong> — Organization-controlled, curated, stable. Direct use allowed.</div>
+        </div>
+        <div class="stoplight-row">
+          <div class="stoplight-dot yellow-dot"></div>
+          <div class="stoplight-text"><strong>Yellow</strong> — Known origin, external authorship, controlled channel. Evidence-linked use; note source origin in attribution.</div>
+        </div>
+        <div class="stoplight-row">
+          <div class="stoplight-dot red-dot"></div>
+          <div class="stoplight-text"><strong>Red</strong> — Unknown origin, unsolicited, or adversarial. Reduce confidence, flag reliance, or exclude from recommendation.</div>
+        </div>
+      </div>
+
+      <!-- Kill Chain Coverage -->
+      <div class="source-card killchain-card">
+        <h3>Promptware Kill Chain Coverage</h3>
+        <div class="kc-stage">
+          <div class="kc-num kc-partial">1</div>
+          <div class="kc-text"><strong>Initial Access</strong> — Source enters context</div>
+          <div class="kc-control">R11A, R11B</div>
+        </div>
+        <div class="kc-stage">
+          <div class="kc-num kc-partial">2</div>
+          <div class="kc-text"><strong>Privilege Escalation</strong> — Override attempt</div>
+          <div class="kc-control">R11B detect</div>
+        </div>
+        <div class="kc-stage">
+          <div class="kc-num kc-mitigated">3</div>
+          <div class="kc-text"><strong>Reconnaissance</strong> — Prompt/rule extraction</div>
+          <div class="kc-control">R11B block</div>
+        </div>
+        <div class="kc-stage">
+          <div class="kc-num kc-blocked">4</div>
+          <div class="kc-text"><strong>Persistence</strong> — Memory poisoning</div>
+          <div class="kc-control">Platform-dep.</div>
+        </div>
+        <div class="kc-stage">
+          <div class="kc-num kc-blocked">5</div>
+          <div class="kc-text"><strong>C2</strong> — External command fetch</div>
+          <div class="kc-control">No channel</div>
+        </div>
+        <div class="kc-stage">
+          <div class="kc-num kc-blocked">6</div>
+          <div class="kc-text"><strong>Lateral Movement</strong> — Cross-system spread</div>
+          <div class="kc-control">Workflow isol.</div>
+        </div>
+        <div class="kc-stage">
+          <div class="kc-num kc-partial">7</div>
+          <div class="kc-text"><strong>Actions on Objective</strong> — Output manipulation</div>
+          <div class="kc-control">R6B, R11C</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-left">
+      Rule 11 is a behavioral governance control, not a technical security boundary.<br>
+      Test R11 on each new platform per R9. Full intake process available for Red-source workflows.
+    </div>
+    <div class="footer-right">ProView v1.8 | FCPS Enterprise Technology Architecture</div>
+  </div>
+</div>
+</body>
+</html>

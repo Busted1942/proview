@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProView v2.0 — AI Decision Governance</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0f1117;
+    --paper: #f5f2eb;
+    --accent: #1a3a5c;
+    --accent2: #c8392b;
+    --mid: #6b7280;
+    --rule: #d4cfc4;
+    --green: #1a5c3a;
+  }
+
+  html { font-size: 14px; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 3rem 2rem;
+  }
+
+  .page { max-width: 900px; margin: 0 auto; }
+
+  /* HEADER */
+  .header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    padding-bottom: 1.2rem;
+    border-bottom: 2px solid var(--ink);
+    margin-bottom: 2.4rem;
+    animation: fadeUp 0.6s ease both;
+  }
+  .wordmark {
+    font-family: 'Fraunces', serif;
+    font-size: 2.8rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .wordmark span { color: var(--accent2); }
+  .version-block {
+    text-align: right;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--mid);
+    line-height: 1.8;
+  }
+  .tagline {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 1.05rem;
+    color: var(--mid);
+    margin-top: 0.5rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 1rem;
+  }
+
+  /* PROBLEM/SOLUTION */
+  .problem-section {
+    margin-bottom: 2.4rem;
+    animation: fadeUp 0.6s 0.15s ease both;
+  }
+  .problem-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--ink);
+    border: 1.5px solid var(--ink);
+  }
+  .problem-card {
+    background: var(--paper);
+    padding: 1.1rem 1.3rem;
+  }
+  .problem-card.solution { background: #eef3e8; }
+  .problem-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .problem-label.without { color: var(--accent2); }
+  .problem-label.with { color: var(--green); }
+  .problem-text {
+    font-size: 0.8rem;
+    line-height: 1.7;
+    color: var(--ink);
+  }
+  .problem-text strong { font-weight: 500; }
+
+  /* ARCHITECTURE */
+  .arch-section {
+    margin-bottom: 2.4rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+  .arch-diagram {
+    display: grid;
+    grid-template-rows: auto auto auto auto;
+    gap: 0;
+    border: 1.5px solid var(--ink);
+    overflow: hidden;
+  }
+  .arch-layer {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    border-bottom: 1.5px solid var(--ink);
+  }
+  .arch-layer:last-child { border-bottom: none; }
+  .layer-label {
+    padding: 1rem 1.2rem;
+    border-right: 1.5px solid var(--ink);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.25rem;
+  }
+  .layer-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .layer-sub {
+    font-size: 0.72rem;
+    color: var(--mid);
+    font-style: italic;
+  }
+  .layer-content {
+    padding: 1rem 1.4rem;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    display: flex;
+    align-items: center;
+  }
+
+  .layer-user { background: var(--paper); }
+
+  .layer-governance {
+    background: var(--accent);
+    color: #f5f2eb;
+  }
+  .layer-governance .layer-name { color: #f5f2eb; }
+  .layer-governance .layer-sub { color: #8bafc8; }
+  .layer-governance .layer-content { color: #c8d9e8; }
+
+  .layer-trust {
+    background: #2a1a1a;
+    color: #f5f2eb;
+  }
+  .layer-trust .layer-name { color: #f5c4c4; }
+  .layer-trust .layer-sub { color: #b08080; }
+  .layer-trust .layer-content { color: #d4b8b8; }
+
+  .layer-engines {
+    background: var(--ink);
+    color: #f5f2eb;
+  }
+  .layer-engines .layer-name { color: #f5f2eb; }
+  .layer-engines .layer-sub { color: #8899aa; }
+  .layer-engines .layer-content { color: #c8d4df; }
+
+  .engine-badges {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .engine-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    padding: 0.25rem 0.6rem;
+    border: 1px solid #445566;
+    border-radius: 2px;
+    color: #aabbcc;
+  }
+  .engine-note {
+    font-size: 0.72rem;
+    color: #667788;
+    font-style: italic;
+    margin-left: 0.5rem;
+  }
+
+  /* FOUR RULES */
+  .rules-section {
+    margin-bottom: 2.4rem;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+  .rules-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--ink);
+    border: 1.5px solid var(--ink);
+  }
+  .rule-card {
+    background: var(--paper);
+    padding: 1.1rem 1.3rem;
+  }
+  .rule-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--accent2);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.3rem;
+  }
+  .rule-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+    color: var(--ink);
+  }
+  .rule-desc {
+    font-size: 0.78rem;
+    color: var(--mid);
+    line-height: 1.6;
+  }
+
+  /* EXAMPLE - Before/After */
+  .example-section {
+    margin-bottom: 2.4rem;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+  .example-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--ink);
+    border: 1.5px solid var(--ink);
+  }
+  .example-header {
+    grid-column: 1 / -1;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.6rem 1.2rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+  }
+  .example-card {
+    background: var(--paper);
+    padding: 1.1rem 1.3rem;
+  }
+  .example-card.governed { background: #eef3e8; }
+  .example-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  .example-label.ungov { color: var(--accent2); }
+  .example-label.gov { color: var(--green); }
+  .example-text {
+    font-size: 0.78rem;
+    line-height: 1.7;
+    color: var(--ink);
+    font-style: italic;
+  }
+  .example-note {
+    font-size: 0.72rem;
+    color: var(--mid);
+    margin-top: 0.7rem;
+    padding-top: 0.7rem;
+    border-top: 1px solid var(--rule);
+    font-style: normal;
+    line-height: 1.6;
+  }
+
+  /* FOOTER */
+  .footer {
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--rule);
+    animation: fadeUp 0.6s 0.5s ease both;
+  }
+  .footer-text {
+    font-size: 0.78rem;
+    line-height: 1.7;
+    color: var(--mid);
+  }
+  .footer-text strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .footer-org {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--rule);
+    margin-top: 1rem;
+    letter-spacing: 0.08em;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media print {
+    body { padding: 1.5rem; background: white; }
+    .page { max-width: 100%; }
+    * { animation: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <div class="wordmark">Pro<span>View</span></div>
+      <div class="tagline">Decision support with calibrated confidence, evidence discipline, and source integrity controls.</div>
+    </div>
+    <div class="version-block">
+      v2.0<br>
+      Platform-agnostic<br>
+      11 Operating Rules
+    </div>
+  </div>
+
+  <!-- PROBLEM/SOLUTION -->
+  <div class="problem-section">
+    <div class="section-label">The Organizational Problem</div>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-label without">Without Governance</div>
+        <div class="problem-text">
+          AI adoption is accelerating across the organization. <strong>Every team uses it differently</strong>, and the quality of AI output depends entirely on whether the individual user knows to question assumptions, check for made-up sources, and catch hidden risks in the documents being analyzed. <strong>Your AI quality is only as good as your least rigorous user.</strong> There is no consistent floor, no verification, and no audit trail.
+        </div>
+      </div>
+      <div class="problem-card solution">
+        <div class="problem-label with">With ProView</div>
+        <div class="problem-text">
+          A single governance layer sits between the user and any AI platform. <strong>The discipline is built into the system, not dependent on the user.</strong> Every output gets the same confidence calibration, evidence standards, and source integrity checks, whether the user is a senior analyst or someone running their first query. The quality floor rises for everyone.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ARCHITECTURE -->
+  <div class="arch-section">
+    <div class="section-label">Architecture — One Governance Layer, Any AI Platform</div>
+    <div class="arch-diagram">
+
+      <div class="arch-layer layer-user">
+        <div class="layer-label">
+          <div class="layer-name">Users</div>
+          <div class="layer-sub">Decision-makers</div>
+        </div>
+        <div class="layer-content">
+          Staff across the organization bring decisions, analyses, and questions to AI. ProView governs the quality and integrity of what comes back, regardless of who is asking or which platform they use.
+        </div>
+      </div>
+
+      <div class="arch-layer layer-governance">
+        <div class="layer-label">
+          <div class="layer-name">ProView</div>
+          <div class="layer-sub">Governance layer</div>
+        </div>
+        <div class="layer-content">
+          Governs how the AI reasons: truth-seeking stance, confidence calibration, assumption discipline, evidence standards, and revision controls. The user interacts with ProView. ProView governs the model. The platform differences become invisible.
+        </div>
+      </div>
+
+      <div class="arch-layer layer-trust">
+        <div class="layer-label">
+          <div class="layer-name">Source</div>
+          <div class="layer-sub">Trust boundary</div>
+        </div>
+        <div class="layer-content">
+          When the AI analyzes uploaded documents or external content, ProView classifies source trust and flags content that tries to manipulate the analysis. This reduces the risk of AI output being silently shaped by the documents it's reviewing.
+        </div>
+      </div>
+
+      <div class="arch-layer layer-engines">
+        <div class="layer-label">
+          <div class="layer-name">AI Engines</div>
+          <div class="layer-sub">Interchangeable</div>
+        </div>
+        <div class="layer-content">
+          <div class="engine-badges">
+            <span class="engine-badge">Claude</span>
+            <span class="engine-badge">GPT</span>
+            <span class="engine-badge">Gemini</span>
+            <span class="engine-note">Platform is an implementation detail. Governance is constant.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOUR RULES -->
+  <div class="rules-section">
+    <div class="section-label">Core Governance — What ProView Enforces</div>
+    <div class="rules-grid">
+      <div class="rule-card">
+        <div class="rule-number">01</div>
+        <div class="rule-title">Truth-Seeking Stance</div>
+        <div class="rule-desc">The AI supports decisions, it doesn't confirm them. No flattery. No telling you what you want to hear. When it's uncertain, it says so and explains why.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-number">02</div>
+        <div class="rule-title">Evidence Discipline</div>
+        <div class="rule-desc">Every output separates what's known from what's estimated from what's unknown. Assumptions are called out. The AI doesn't guess and doesn't make up sources.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-number">03</div>
+        <div class="rule-title">Calibrated Confidence</div>
+        <div class="rule-desc">Every recommendation comes with a confidence level and an honest explanation of what would make it higher. Bigger decisions require stronger evidence before moving forward.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-number">04</div>
+        <div class="rule-title">Source Integrity</div>
+        <div class="rule-desc">When the AI analyzes external documents, it classifies their trustworthiness first and flags anything that looks like it's trying to steer the analysis. Uploaded files are evidence to examine, not instructions to follow.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXAMPLE -->
+  <div class="example-section">
+    <div class="section-label">The Difference in Practice</div>
+    <div class="example-grid">
+      <div class="example-header">Question to the AI: "We're considering adopting a new SIS platform. Based on these three vendor proposals, which one should we go with?"</div>
+      <div class="example-card">
+        <div class="example-label ungov">Ungoverned AI</div>
+        <div class="example-text">"Based on my analysis, Vendor A is the strongest choice. They offer a comprehensive feature set, strong K-12 experience, and competitive pricing. I'd recommend moving forward with them."</div>
+        <div class="example-note">Sounds confident. But which claims did it verify? What did it assume? What's the risk if it's wrong? Would you brief this to the board?</div>
+      </div>
+      <div class="example-card governed">
+        <div class="example-label gov">ProView-Governed AI</div>
+        <div class="example-text">"Vendor A leads on feature coverage. Confidence: 65% — not higher because their data migration timeline assumes infrastructure we haven't confirmed, and their SLA is an objective, not a contractual penalty. Vendor B is stronger on integration but disclosed a FERPA carve-out on page 34 that needs legal review. Recommend: do not select yet. Resolve the FERPA question and confirm migration prerequisites before scoring."</div>
+        <div class="example-note">Surfaces what it doesn't know, flags hidden risks in the source documents, and tells you what to do next instead of guessing.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-text">
+      <strong>ProView governs how the AI thinks.</strong> Portable across platforms. Same rules for every user. Output you can act on, defend in review, and trace back to evidence.
+    </div>
+    <div class="footer-org">FCPS Enterprise Technology Architecture</div>
+  </div>
+
+</div>
+</body>
+</html>

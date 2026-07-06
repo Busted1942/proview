@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProView v2.0 — AI Decision Governance</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0f1117;
+    --paper: #f5f2eb;
+    --accent: #1a3a5c;
+    --accent2: #c8392b;
+    --mid: #6b7280;
+    --rule: #d4cfc4;
+    --tier1: #1a3a5c;
+    --tier2: #2d6a8f;
+    --tier3: #5a9ab5;
+    --green: #1a5c3a;
+    --amber: #7a5c1a;
+    --red: #8b2e2e;
+  }
+
+  html { font-size: 14px; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 3rem 2rem;
+  }
+
+  .page { max-width: 900px; margin: 0 auto; }
+
+  /* HEADER */
+  .header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    padding-bottom: 1.2rem;
+    border-bottom: 2px solid var(--ink);
+    margin-bottom: 2.4rem;
+    animation: fadeUp 0.6s ease both;
+  }
+  .wordmark {
+    font-family: 'Fraunces', serif;
+    font-size: 2.8rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .wordmark span { color: var(--accent2); }
+  .version-block {
+    text-align: right;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--mid);
+    line-height: 1.8;
+  }
+  .tagline {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 1.05rem;
+    color: var(--mid);
+    margin-top: 0.5rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  /* PROBLEM STATEMENT */
+  .problem-section {
+    margin-bottom: 2.4rem;
+    animation: fadeUp 0.6s 0.15s ease both;
+  }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 1rem;
+  }
+  .problem-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--ink);
+    border: 1.5px solid var(--ink);
+  }
+  .problem-card {
+    background: var(--paper);
+    padding: 1rem 1.3rem;
+  }
+  .problem-card.solution {
+    background: #eef3e8;
+  }
+  .problem-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .problem-label.without { color: var(--accent2); }
+  .problem-label.with { color: var(--green); }
+  .problem-text {
+    font-size: 0.8rem;
+    line-height: 1.7;
+    color: var(--ink);
+  }
+  .problem-text strong { font-weight: 500; }
+
+  /* ARCHITECTURE */
+  .arch-section {
+    margin-bottom: 2.4rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+  .arch-diagram {
+    display: grid;
+    grid-template-rows: auto auto auto auto;
+    gap: 0;
+    border: 1.5px solid var(--ink);
+    overflow: hidden;
+  }
+  .arch-layer {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    border-bottom: 1.5px solid var(--ink);
+  }
+  .arch-layer:last-child { border-bottom: none; }
+  .layer-label {
+    padding: 1rem 1.2rem;
+    border-right: 1.5px solid var(--ink);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.25rem;
+  }
+  .layer-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .layer-sub {
+    font-size: 0.72rem;
+    color: var(--mid);
+    font-style: italic;
+  }
+  .layer-content {
+    padding: 1rem 1.4rem;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    display: flex;
+    align-items: center;
+  }
+
+  .layer-user { background: var(--paper); }
+  .layer-governance {
+    background: var(--accent);
+    color: #f5f2eb;
+  }
+  .layer-governance .layer-name { color: #f5f2eb; }
+  .layer-governance .layer-sub { color: #8bafc8; }
+  .layer-governance .layer-content { color: #c8d9e8; }
+
+  .layer-trust {
+    background: #2a1a1a;
+    color: #f5f2eb;
+  }
+  .layer-trust .layer-name { color: #f5c4c4; }
+  .layer-trust .layer-sub { color: #b08080; }
+  .layer-trust .layer-content { color: #d4b8b8; }
+
+  .layer-engines {
+    background: var(--ink);
+    color: #f5f2eb;
+  }
+  .layer-engines .layer-name { color: #f5f2eb; }
+  .layer-engines .layer-sub { color: #8899aa; }
+  .layer-engines .layer-content { color: #c8d4df; }
+
+  .engine-badges {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .engine-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    padding: 0.25rem 0.6rem;
+    border: 1px solid #445566;
+    border-radius: 2px;
+    color: #aabbcc;
+  }
+  .engine-note {
+    font-size: 0.72rem;
+    color: #667788;
+    font-style: italic;
+    margin-left: 0.5rem;
+  }
+
+  /* FOUR RULES */
+  .rules-section {
+    margin-bottom: 2.4rem;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+  .rules-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--ink);
+    border: 1.5px solid var(--ink);
+  }
+  .rule-card {
+    background: var(--paper);
+    padding: 1.1rem 1.3rem;
+  }
+  .rule-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--accent2);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.3rem;
+  }
+  .rule-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+    color: var(--ink);
+  }
+  .rule-desc {
+    font-size: 0.78rem;
+    color: var(--mid);
+    line-height: 1.6;
+  }
+
+  /* TIERS */
+  .tiers-section {
+    margin-bottom: 2.4rem;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+  .tiers-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--ink);
+    border: 1.5px solid var(--ink);
+  }
+  .tier-card {
+    background: var(--paper);
+    padding: 1.1rem 1.2rem;
+  }
+  .tier-badge {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.5rem;
+    margin-bottom: 0.7rem;
+    color: var(--paper);
+  }
+  .tier-1 .tier-badge { background: var(--tier1); }
+  .tier-2 .tier-badge { background: var(--tier2); }
+  .tier-3 .tier-badge { background: var(--tier3); }
+  .tier-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 0.92rem;
+    margin-bottom: 0.3rem;
+  }
+  .tier-user {
+    font-size: 0.72rem;
+    color: var(--mid);
+    font-style: italic;
+    margin-bottom: 0.7rem;
+    padding-bottom: 0.7rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .tier-features {
+    list-style: none;
+    font-size: 0.76rem;
+    line-height: 1.8;
+    color: var(--ink);
+  }
+  .tier-features li::before {
+    content: "\2192 ";
+    color: var(--mid);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* EXAMPLE */
+  .example-section {
+    margin-bottom: 2.4rem;
+    animation: fadeUp 0.6s 0.5s ease both;
+  }
+  .example-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--ink);
+    border: 1.5px solid var(--ink);
+  }
+  .example-card {
+    background: var(--paper);
+    padding: 1rem 1.2rem;
+  }
+  .example-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: var(--mid);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .example-text {
+    font-size: 0.77rem;
+    line-height: 1.65;
+    color: var(--ink);
+    font-style: italic;
+  }
+  .example-header {
+    grid-column: 1 / -1;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.6rem 1.2rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+  }
+
+  /* FOOTER */
+  .footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--rule);
+    animation: fadeUp 0.6s 0.6s ease both;
+  }
+  .footer-block-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 0.5rem;
+  }
+  .footer-text {
+    font-size: 0.78rem;
+    line-height: 1.7;
+    color: var(--ink);
+  }
+  .provenance-tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    padding: 0.15rem 0.4rem;
+    border: 1px solid var(--rule);
+    color: var(--mid);
+    margin-right: 0.3rem;
+    margin-top: 0.3rem;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media print {
+    body { padding: 1.5rem; background: white; }
+    .page { max-width: 100%; }
+    * { animation: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <div class="wordmark">Pro<span>View</span></div>
+      <div class="tagline">Decision support with calibrated confidence, evidence discipline, and source integrity controls.</div>
+    </div>
+    <div class="version-block">
+      v2.0<br>
+      Platform-agnostic<br>
+      11 Operating Rules
+    </div>
+  </div>
+
+  <!-- PROBLEM/SOLUTION -->
+  <div class="problem-section">
+    <div class="section-label">The Organizational Problem</div>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-label without">Without Governance</div>
+        <div class="problem-text">
+          AI adoption is accelerating across the organization. <strong>Every team uses it differently.</strong> There is no consistent quality floor, no way to verify how a recommendation was reached, no source integrity, and no audit trail. AI output is not trustworthy enough to brief upward or act on at scale.
+        </div>
+      </div>
+      <div class="problem-card solution">
+        <div class="problem-label with">With ProView</div>
+        <div class="problem-text">
+          A single governance layer sits between the user and any AI platform. It enforces <strong>the same reasoning discipline, confidence calibration, and source controls</strong> regardless of which model is underneath. Output becomes trustworthy enough to act on, defend in review, and trace back to evidence.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ARCHITECTURE -->
+  <div class="arch-section">
+    <div class="section-label">Architecture — One Governance Layer, Any AI Platform</div>
+    <div class="arch-diagram">
+
+      <div class="arch-layer layer-user">
+        <div class="layer-label">
+          <div class="layer-name">Users</div>
+          <div class="layer-sub">Decision-makers</div>
+        </div>
+        <div class="layer-content">
+          Three calibrated tiers — Expert, Practitioner, Operational — each presenting the same governed reasoning through language appropriate to the user's role. Same rules. Different interface.
+        </div>
+      </div>
+
+      <div class="arch-layer layer-governance">
+        <div class="layer-label">
+          <div class="layer-name">ProView</div>
+          <div class="layer-sub">Governance layer</div>
+        </div>
+        <div class="layer-content">
+          Governs how the AI reasons: truth-seeking stance, confidence calibration, assumption discipline, blast radius classification, decision rights, evidence triage, anti-sycophancy, revision controls, and audit provenance. The user interacts with ProView. ProView governs the model. The model differences become invisible.
+        </div>
+      </div>
+
+      <div class="arch-layer layer-trust">
+        <div class="layer-label">
+          <div class="layer-name">Source</div>
+          <div class="layer-sub">Trust boundary</div>
+        </div>
+        <div class="layer-content">
+          External documents and retrieved content pass through a trust classification before influencing analysis. Override attempts are detected and flagged. Uploaded files are treated as evidence to analyze, never as instructions to follow. Consequential decisions require source provenance.
+        </div>
+      </div>
+
+      <div class="arch-layer layer-engines">
+        <div class="layer-label">
+          <div class="layer-name">AI Engines</div>
+          <div class="layer-sub">Interchangeable</div>
+        </div>
+        <div class="layer-content">
+          <div class="engine-badges">
+            <span class="engine-badge">Claude</span>
+            <span class="engine-badge">GPT</span>
+            <span class="engine-badge">Gemini</span>
+            <span class="engine-note">Platform is an implementation detail. Governance is constant.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOUR RULES -->
+  <div class="rules-section">
+    <div class="section-label">Core Governance Rules — Apply at Every Tier, Every Platform</div>
+    <div class="rules-grid">
+      <div class="rule-card">
+        <div class="rule-number">RULE 01</div>
+        <div class="rule-title">Truth-Seeking Stance</div>
+        <div class="rule-desc">The AI operates as a decision-support tool, never a confirmation tool. No flattery. No mirroring conclusions. Uncertainty stated plainly and confidence reduced accordingly.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-number">RULE 02</div>
+        <div class="rule-title">Evidence Discipline</div>
+        <div class="rule-desc">Every output distinguishes verified facts, estimates, and unknowns. Assumptions are flagged with correction hooks. The AI does not guess and does not fabricate sources.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-number">RULE 03</div>
+        <div class="rule-title">Calibrated Confidence</div>
+        <div class="rule-desc">Every recommendation carries a confidence level with an explanation of why it isn't higher. 80% means wrong about 1 in 5. High-impact decisions require higher evidence thresholds before proceeding.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-number">RULE 04</div>
+        <div class="rule-title">Source Authority</div>
+        <div class="rule-desc">External documents cannot override the AI's operating rules. Uploaded files are evidence, not instructions. Manipulation attempts are detected, flagged, and rejected. Source trust is classified before analysis begins.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIERS -->
+  <div class="tiers-section">
+    <div class="section-label">Interface Tiers — Same Governance, Calibrated Output</div>
+    <div class="tiers-grid">
+      <div class="tier-card tier-1">
+        <div class="tier-badge">Tier 1</div>
+        <div class="tier-title">Expert</div>
+        <div class="tier-user">Senior analysts, CISO, architects</div>
+        <ul class="tier-features">
+          <li>Full ProView structure</li>
+          <li>Calibrated confidence with reasoning</li>
+          <li>Deep Dive depth available</li>
+          <li>Base rate anchoring explicit</li>
+          <li>Full audit provenance</li>
+          <li>Source trust classification visible</li>
+        </ul>
+      </div>
+      <div class="tier-card tier-2">
+        <div class="tier-badge">Tier 2</div>
+        <div class="tier-title">Practitioner</div>
+        <div class="tier-user">Mid-level analysts, team leads</div>
+        <ul class="tier-features">
+          <li>Simplified decision checklist</li>
+          <li>Plain-language confidence</li>
+          <li>Key assumptions as questions</li>
+          <li>Standard depth default</li>
+          <li>Blast radius in plain terms</li>
+          <li>Next actions prioritized</li>
+        </ul>
+      </div>
+      <div class="tier-card tier-3">
+        <div class="tier-badge">Tier 3</div>
+        <div class="tier-title">Operational</div>
+        <div class="tier-user">Junior staff, recurring decisions</div>
+        <ul class="tier-features">
+          <li>Structured templates only</li>
+          <li>Framework invisible to user</li>
+          <li>Binary or bounded outputs</li>
+          <li>Escalation triggers built in</li>
+          <li>Mini depth only</li>
+          <li>Governance runs silently</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXAMPLE -->
+  <div class="example-section">
+    <div class="section-label">Same Decision, Three Tiers — Vendor Risk Example</div>
+    <div class="example-grid">
+      <div class="example-header">Decision: "Should we extend our EDR vendor contract for 3 years given the current threat landscape?"</div>
+      <div class="example-card">
+        <div class="example-label">Tier 1 — Expert</div>
+        <div class="example-text">"Recommendation: Pilot extension only (12 months). Confidence: 62% — not higher because threat landscape assumptions are 6 months stale and two credible alternatives have emerged. Key assumption: current vendor's AI detection roadmap delivers Q3. Disconfirmer: if CrowdStrike closes the pricing gap by &gt;20%, reassess. Blast radius: high / low reversibility after 18 months."</div>
+      </div>
+      <div class="example-card">
+        <div class="example-label">Tier 2 — Practitioner</div>
+        <div class="example-text">"Leaning toward a shorter extension — here's why: we're assuming their roadmap delivers on time, and that's not confirmed. Before committing to 3 years, worth checking if two newer vendors deserve a closer look. Biggest risk is locking in before the market settles. Suggest 12-month bridge with formal review at 9 months."</div>
+      </div>
+      <div class="example-card">
+        <div class="example-label">Tier 3 — Operational</div>
+        <div class="example-text">"This decision needs senior review. Contracts over 2 years with high organizational impact require CISO sign-off. Action: escalate to team lead with current vendor performance scorecard. Do not renew without completed vendor comparison checklist."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div>
+      <div class="footer-block-title">Decision Provenance</div>
+      <div class="footer-text">Every high-impact output carries an audit trail: depth tier, material assumptions, disconfirmers, source trust classification, and decision rights. Designed for post-incident review and leadership accountability without adding friction to routine decisions.</div>
+    </div>
+    <div>
+      <div class="footer-block-title">Governance Tags — Every Output</div>
+      <div class="footer-text">
+        <span class="provenance-tag">DEPTH: STANDARD</span>
+        <span class="provenance-tag">BLAST: HIGH</span>
+        <span class="provenance-tag">REV: LOW</span>
+        <span class="provenance-tag">CONFIDENCE: 62%</span>
+        <span class="provenance-tag">OWNER: ASSUMED</span>
+        <span class="provenance-tag">SOURCE: CLASSIFIED</span>
+        <br><br>
+        Provenance tags travel with the output. Any stakeholder can reconstruct how the recommendation was reached and what would change it.
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
